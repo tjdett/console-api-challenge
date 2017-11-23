@@ -1,18 +1,18 @@
 package net.dettrick.tim.consoleapichallenge.data
 
-import java.util.UUID
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
+import org.hibernate.annotations.Formula
 import org.hibernate.annotations.GenericGenerator
-import javax.persistence.OneToMany
-import javax.persistence.Temporal
-import javax.persistence.TemporalType
-import java.time.Instant
-import javax.persistence.Column
 import java.time.Duration
+import java.time.Instant
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
+@Table(name="tenants")
 data class Tenant(
 		@Id
 		@GeneratedValue(generator = "uuid2")
@@ -23,18 +23,14 @@ data class Tenant(
 		@Column
 		val weeklyRentAmount: Dollars,
 		@Column
-		val epoch: Instant = Instant.now()) {
-	
-	@OneToMany(mappedBy="tenant")
-	var receipts: Set<RentReceipt>? = null
+		val epoch: Instant = Instant.now(),
+		@Formula("select sum(r.amount) from receipts r where r.tenant_id = id")
+		val totalPaid: Dollars = 0.0
+		) {
 	
 	val account: AccountState
 		get() {
-			return AccountState(epoch, totalPaid()).payRent(Duration.ofDays(7), weeklyRentAmount)
+			return AccountState(epoch, totalPaid).payRent(Duration.ofDays(7), weeklyRentAmount)
 		}
-	
-	fun totalPaid(): Double {
-		return receipts?.sumByDouble { it.amount } ?: 0.0
-	}
 		
 }
