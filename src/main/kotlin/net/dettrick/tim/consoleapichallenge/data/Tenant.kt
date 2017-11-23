@@ -30,10 +30,11 @@ data class Tenant(
 	
 	val account: AccountState
 		get() {
-			val payments = receipts?.map { it.amount } ?: emptyList<Double>()
-			return payments.fold(
-					AccountState(epoch, 0.0),
-					rentPayer(Duration.ofDays(7), weeklyRentAmount))
+			return AccountState(epoch, totalPaid()).payRent(Duration.ofDays(7), weeklyRentAmount)
 		}
+	
+	fun totalPaid(): Double {
+		return receipts?.sumByDouble { it.amount } ?: 0.0
+	}
 		
 }

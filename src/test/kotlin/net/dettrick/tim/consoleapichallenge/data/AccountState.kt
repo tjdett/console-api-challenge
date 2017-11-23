@@ -9,18 +9,21 @@ import java.time.Duration
 import java.time.Instant
 
 @RunWith(JUnit4::class)
-class RentPayerTest {
-	val f = rentPayer(Duration.ofDays(1), 10.0)
+class AccountStateTest {
+	private fun payRent(account: AccountState): AccountState {
+		return account.payRent(Duration.ofDays(1), 10.0)
+	}
 	
 	@Test
 	fun noChangePayment() {
-		assert.that(f(AccountState(Instant.EPOCH, 2.0), 5.0), equalTo(AccountState(Instant.EPOCH, 7.0)))
+		val account = AccountState(Instant.EPOCH, 7.0)
+		assert.that(payRent(account), equalTo(account))
 	}
 	
 	@Test
 	fun singlePeriodPayment() {
 		assert.that(
-				f(AccountState(Instant.EPOCH, 2.0), 9.0),
+				payRent(AccountState(Instant.EPOCH, 11.0)),
 				equalTo(AccountState(Instant.EPOCH.plus(Duration.ofDays(1)), 1.0)))
 	}
 	
@@ -28,7 +31,7 @@ class RentPayerTest {
 	@Test
 	fun multiplePeriodPayment() {
 		assert.that(
-				f(AccountState(Instant.EPOCH, 2.0), 23.0),
+				payRent(AccountState(Instant.EPOCH, 25.0)),
 				equalTo(AccountState(Instant.EPOCH.plus(Duration.ofDays(2)), 5.0)))
 	}
 }
