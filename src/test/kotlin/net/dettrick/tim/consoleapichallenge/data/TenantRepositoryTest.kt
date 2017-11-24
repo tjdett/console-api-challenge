@@ -35,7 +35,9 @@ class TenantRepositoryTest {
 		entityManager.persist(RentReceipt(null, tenant, 350.00))
 		entityManager.persist(RentReceipt(null, tenant, 450.00))
 		entityManager.flush()
-		val updatedTenant = entityManager.refresh(tenant)
+		entityManager.clear()
+		val updatedTenant = repository.findById(tenant.id).get()
+		println(updatedTenant)
 		assert.that(updatedTenant.account.paidTo, equalTo(updatedTenant.epoch.plus(Duration.ofDays(14))))
 		assert.that(updatedTenant.account.credit, equalTo(200.0))
 		

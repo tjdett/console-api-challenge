@@ -18,11 +18,10 @@
 	</parent>
 
 	<properties>
-		<main.class>net.dettrick.tim.MainKt</main.class>
+		<start-class>net.dettrick.tim.consoleapichallenge.MainKt</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<kotlin.version>1.1.60</kotlin.version>
-		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 		<junit.platform.version>1.0.2</junit.platform.version>
 		<junit.jupiter.version>5.0.2</junit.jupiter.version>
 	</properties>

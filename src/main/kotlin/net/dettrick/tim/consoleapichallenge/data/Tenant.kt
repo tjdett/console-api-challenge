@@ -12,12 +12,12 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name="tenants")
+@Table(name = "tenants")
 data class Tenant(
 		@Id
 		@GeneratedValue(generator = "uuid2")
 		@GenericGenerator(name = "uuid2", strategy = "uuid2")
-		val id: UUID?,
+		val id: UUID? = null,
 		@Column
 		val name: String,
 		@Column
@@ -25,12 +25,14 @@ data class Tenant(
 		@Column
 		val epoch: Instant = Instant.now(),
 		@Formula("select sum(r.amount) from receipts r where r.tenant_id = id")
-		val totalPaid: Dollars = 0.0
-		) {
+		val totalPaid: Dollars? = 0.0
+) {
 	
+	private constructor() : this(name = "", weeklyRentAmount = 0.0)
+
 	val account: AccountState
 		get() {
-			return AccountState(epoch, totalPaid).payRent(Duration.ofDays(7), weeklyRentAmount)
+			return AccountState(epoch, totalPaid ?: 0.0).payRent(Duration.ofDays(7), weeklyRentAmount)
 		}
-		
+
 }
