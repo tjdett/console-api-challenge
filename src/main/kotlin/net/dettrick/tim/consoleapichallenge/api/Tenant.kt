@@ -1,9 +1,7 @@
 package net.dettrick.tim.consoleapichallenge.api
 
-import java.util.UUID
 import java.time.LocalDate
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+import java.util.UUID
 
 data class Tenant(
 		val id: UUID,
