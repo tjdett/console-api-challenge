@@ -23,11 +23,11 @@ data class Tenant(
 		@Column
 		val weeklyRentAmount: Dollars,
 		@Column
-		val epoch: Instant = Instant.now(),
-		@Formula("select sum(r.amount) from receipts r where r.tenant_id = id")
-		val totalPaid: Dollars? = 0.0
+		val epoch: Instant = Instant.now()
 ) {
-	
+	@Formula("select sum(r.amount) from receipts r where r.tenant_id = id")
+	val totalPaid: Dollars? = 0.0
+		
 	private constructor() : this(name = "", weeklyRentAmount = 0.0)
 
 	val account: AccountState

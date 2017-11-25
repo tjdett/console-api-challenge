@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.junit4.SpringRunner
 import java.time.Duration
+import java.time.Instant
+import org.springframework.data.domain.PageRequest
 
 @RunWith(SpringRunner::class)
 @DataJpaTest
@@ -40,7 +42,33 @@ class TenantRepositoryTest {
 		println(updatedTenant)
 		assert.that(updatedTenant.account.paidTo, equalTo(updatedTenant.epoch.plus(Duration.ofDays(14))))
 		assert.that(updatedTenant.account.credit, equalTo(200.0))
-		
+	}
+	
+	@Test
+	fun recentPayers() {
+		val now = Instant.now()
+		val tenants = arrayOf(
+				Tenant(null, "Amelia", 300.00),
+				Tenant(null, "Beatrix", 250.00),
+				Tenant(null, "Clara", 320.00),
+				Tenant(null, "David", 320.00),
+				Tenant(null, "Elton", 320.00),
+				Tenant(null, "Frederick", 320.00)
+		).map { repository.save(it) }
+		arrayOf(
+				RentReceipt(null, tenants[3], 100.0, now.minusSeconds(10)),
+				RentReceipt(null, tenants[5], 100.0, now.minusSeconds(11)),
+				RentReceipt(null, tenants[2], 100.0, now.minusSeconds(12)),
+				RentReceipt(null, tenants[0], 100.0, now.minusSeconds(13)),
+				RentReceipt(null, tenants[1], 100.0, now.minusSeconds(14)),
+				RentReceipt(null, tenants[5], 100.0, now.minusSeconds(15)),
+				RentReceipt(null, tenants[0], 100.0, now.minusSeconds(16)),
+				RentReceipt(null, tenants[3], 100.0, now.minusSeconds(17))
+		).forEach { entityManager.persistAndFlush(it) }
+		assert.that(
+				repository.findAllWithRentReceiptSince(now.minusSeconds(12)).map { it.name }.toSet(),
+				equalTo(setOf("David", "Frederick", "Clara"))
+		)
 	}
 
 }
