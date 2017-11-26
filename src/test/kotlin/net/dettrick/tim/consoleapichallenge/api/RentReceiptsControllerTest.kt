@@ -4,22 +4,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
-import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.ApplicationContext
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.reactive.server.EntityExchangeResult
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
-import java.util.UUID
-import net.dettrick.tim.consoleapichallenge.data.Tenant as DataTenant
-import net.dettrick.tim.consoleapichallenge.data.RentReceipt as DataRentReceipt
 import javax.transaction.Transactional
+import net.dettrick.tim.consoleapichallenge.data.RentReceipt as DataRentReceipt
+import net.dettrick.tim.consoleapichallenge.data.Tenant as DataTenant
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

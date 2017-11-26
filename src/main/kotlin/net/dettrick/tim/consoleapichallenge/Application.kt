@@ -3,10 +3,10 @@ package net.dettrick.tim.consoleapichallenge
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 @SpringBootApplication
 @EnableJpaRepositories
