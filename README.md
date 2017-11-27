@@ -1,6 +1,6 @@
 # Console Group API Challenge
 
-This is a Kotlin & Spring Boot 5.0 solution the the Console Group API Challenge.
+This is a Kotlin & Spring Boot 5.0 solution to the Console Group API Challenge.
 
 To run unit/integration tests:
 
